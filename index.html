@@ -151,7 +151,7 @@
   <div class="envelope-wrapper" onclick="openEnvelope(this)">
     <div class="envelope">
       <div class="flap"></div>
-      <div class="seal">💌</div>
+      <div class="seal">🌸</div>
       <div class="paper">
         <h2>I’m Sorry</h2>
         <p>
@@ -165,15 +165,10 @@
     </div>
   </div>
 
-  <audio id="bgm" preload="auto" src="https://raw.githubusercontent.com/NotLaze/gift-envelope/main/pretty-little-baby.mp3"></audio>
-
   <script>
-    const audio = document.getElementById('bgm');
-
     function openEnvelope(wrapper) {
       const envelope = wrapper.querySelector('.envelope');
       envelope.classList.add('open');
-      audio.play().catch(() => {});
     }
 
     function createHeart() {
