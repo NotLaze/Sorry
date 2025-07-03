@@ -3,19 +3,190 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>I'm So Sorry 💔</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>I'm Sorry</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to top, #b30059, #ffb6d5, #ffe6f0);
+      font-family: 'Georgia', serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: fixed;
+      top: -10px;
+      font-size: 20px;
+      z-index: 0;
+      animation: fall linear infinite;
+      pointer-events: none;
+      background: linear-gradient(45deg, #ff4da6, #ff66cc, #ff99cc, #ff4da6);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 380px;
+      height: 270px;
+      perspective: 1500px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .envelope {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #fddde6, #ffe6f3);
+      border: 3px solid #cc6699;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, #ffb6d5, #ffe0ec);
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top center;
+      transition: transform 1s ease;
+      z-index: 3;
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(-160deg);
+    }
+
+    .seal {
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: #c2185b;
+      border-radius: 50%;
+      color: white;
+      font-size: 22px;
+      line-height: 40px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 4;
+      transition: opacity 0.5s ease;
+    }
+
+    .envelope.open .seal {
+      opacity: 0;
+    }
+
+    .paper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      width: 85%;
+      max-height: 160px;
+      background: #fffafc;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+      z-index: 2;
+      overflow-y: auto;
+    }
+
+    .envelope.open .paper {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+
+    h2 {
+      color: #b30059;
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    p {
+      color: #660033;
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .envelope-wrapper {
+        width: 90%;
+        height: 240px;
+      }
+
+      .paper {
+        font-size: 16px;
+        padding: 14px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>I'm Sorry 😞</h1>
-    <p>Hey love,</p>
-    <p>I know I messed up. I just want you to know how truly sorry I am.</p>
-    <p>You mean the world to me, and I hate that I hurt you. I like when you smile, you laugh, and the way you look at me when I say something dumb.</p>
-    <p>I’ll do better. I promise.</p>
-    <p>Can we talk? 💌</p>
-    <p>Forever yours,<br><strong>Levi</strong></p>
-    <button onclick="window.location.href='https://instagram.com/yourprofile'">Message Me?</button>
+  <div class="envelope-wrapper" onclick="openEnvelope(this)">
+    <div class="envelope">
+      <div class="flap"></div>
+      <div class="seal">💌</div>
+      <div class="paper">
+        <h2>I’m Sorry</h2>
+        <p>
+          I know I wasn't the best version of myself today.<br><br>
+          I spoke in a way I shouldn't have, and I hate that I made you feel hurt or unimportant.<br><br>
+          You mean so much to me — more than I show sometimes — and I just want you to know that I'm truly sorry.<br><br>
+          I'm learning, and I want to be better — for you, for us.<br><br>
+          Thank you for still being patient with me. 💗
+        </p>
+      </div>
+    </div>
   </div>
+
+  <audio id="bgm" preload="auto" src="https://raw.githubusercontent.com/NotLaze/gift-envelope/main/pretty-little-baby.mp3"></audio>
+
+  <script>
+    const audio = document.getElementById('bgm');
+
+    function openEnvelope(wrapper) {
+      const envelope = wrapper.querySelector('.envelope');
+      envelope.classList.add('open');
+      audio.play().catch(() => {});
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+      heart.innerText = "❤️";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    setInterval(createHeart, 300);
+  </script>
 </body>
 </html>
